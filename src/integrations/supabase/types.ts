@@ -119,29 +119,65 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       Students: {
         Row: {
+          access_url: string | null
+          child_uid: string | null
           class: string
           created_at: string
           id: number
           name: string
           parent_email: string | null
+          parent_password: string | null
           parent_phone: string | null
         }
         Insert: {
+          access_url?: string | null
+          child_uid?: string | null
           class: string
           created_at?: string
           id?: number
           name?: string
           parent_email?: string | null
+          parent_password?: string | null
           parent_phone?: string | null
         }
         Update: {
+          access_url?: string | null
+          child_uid?: string | null
           class?: string
           created_at?: string
           id?: number
           name?: string
           parent_email?: string | null
+          parent_password?: string | null
           parent_phone?: string | null
         }
         Relationships: []
