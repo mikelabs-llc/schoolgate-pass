@@ -119,6 +119,48 @@ export type Database = {
           },
         ]
       }
+      profile_change_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          id: number
+          new_password: string | null
+          notes: string | null
+          parent_email: string | null
+          parent_name: string | null
+          parent_phone: string | null
+          requested_at: string
+          status: string
+          student_id: number
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          id?: never
+          new_password?: string | null
+          notes?: string | null
+          parent_email?: string | null
+          parent_name?: string | null
+          parent_phone?: string | null
+          requested_at?: string
+          status?: string
+          student_id: number
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          id?: never
+          new_password?: string | null
+          notes?: string | null
+          parent_email?: string | null
+          parent_name?: string | null
+          parent_phone?: string | null
+          requested_at?: string
+          status?: string
+          student_id?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -157,6 +199,7 @@ export type Database = {
           parent_email: string | null
           parent_password: string | null
           parent_phone: string | null
+          profile_photo_url: string | null
         }
         Insert: {
           access_url?: string | null
@@ -168,6 +211,7 @@ export type Database = {
           parent_email?: string | null
           parent_password?: string | null
           parent_phone?: string | null
+          profile_photo_url?: string | null
         }
         Update: {
           access_url?: string | null
@@ -179,6 +223,40 @@ export type Database = {
           parent_email?: string | null
           parent_password?: string | null
           parent_phone?: string | null
+          profile_photo_url?: string | null
+        }
+        Relationships: []
+      }
+      terms: {
+        Row: {
+          created_at: string
+          end_date: string
+          fee_amount: number
+          id: number
+          is_active: boolean
+          name: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          fee_amount?: number
+          id?: never
+          is_active?: boolean
+          name: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          fee_amount?: number
+          id?: never
+          is_active?: boolean
+          name?: string
+          start_date?: string
+          updated_at?: string
         }
         Relationships: []
       }
