@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StudentsTab } from '@/components/teacher/StudentsTab';
 import { AttendanceTab } from '@/components/teacher/AttendanceTab';
 import { FeesTab } from '@/components/teacher/FeesTab';
+import { TermsManagementTab } from '@/components/teacher/TermsManagementTab';
+import { ApprovalsTab } from '@/components/teacher/ApprovalsTab';
 import { URLSharingTab } from '@/components/teacher/URLSharingTab';
 import { LogOut, GraduationCap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -75,7 +77,7 @@ const TeacherDashboard = () => {
           <div className="flex items-center gap-3">
             <GraduationCap className="h-8 w-8 text-primary" />
             <div>
-              <h1 className="text-2xl font-bold">School Automation</h1>
+              <h1 className="text-2xl font-bold">Kifaru School Portal</h1>
               <p className="text-sm text-muted-foreground">
                 Welcome, {profile?.display_name || user.email}
               </p>
@@ -90,10 +92,12 @@ const TeacherDashboard = () => {
 
       <main className="container mx-auto px-4 py-6">
         <Tabs defaultValue="students" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="attendance">Attendance</TabsTrigger>
             <TabsTrigger value="fees">Fees</TabsTrigger>
+            <TabsTrigger value="terms">Terms</TabsTrigger>
+            <TabsTrigger value="approvals">Approvals</TabsTrigger>
             <TabsTrigger value="sharing">URL Sharing</TabsTrigger>
           </TabsList>
 
@@ -107,6 +111,14 @@ const TeacherDashboard = () => {
 
           <TabsContent value="fees" className="mt-6">
             <FeesTab />
+          </TabsContent>
+
+          <TabsContent value="terms" className="mt-6">
+            <TermsManagementTab />
+          </TabsContent>
+
+          <TabsContent value="approvals" className="mt-6">
+            <ApprovalsTab />
           </TabsContent>
 
           <TabsContent value="sharing" className="mt-6">

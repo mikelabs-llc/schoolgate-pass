@@ -11,8 +11,8 @@ const Index = () => {
           <div className="flex justify-center mb-6">
             <GraduationCap className="h-16 w-16 text-primary" />
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            School Automation
+          <h1 className="text-4xl md:text-6xl font-bold text-navy mb-4">
+            Kifaru School Portal
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Streamline student management, attendance tracking, and fee collection 
