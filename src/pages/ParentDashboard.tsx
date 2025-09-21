@@ -41,16 +41,33 @@ const ParentDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const studentData = sessionStorage.getItem('parentStudentData');
-    if (!studentData) {
-      navigate('/parent-auth');
-      return;
-    }
-
-    const parsedStudent = JSON.parse(studentData);
-    setStudent(parsedStudent);
-    fetchStudentData(parsedStudent.id);
+    // Try to fetch student data directly using RLS policies
+    // If successful, it means parent is authenticated
+    fetchParentStudentData();
   }, [navigate]);
+
+  const fetchParentStudentData = async () => {
+    try {
+      // Try to fetch student data - this will only work if parent is authenticated
+      // and RLS context is properly set
+      const { data: studentData, error: studentError } = await supabase
+        .from('Students')
+        .select('*')
+        .single();
+
+      if (studentError || !studentData) {
+        // No student data means no valid parent session
+        navigate('/parent-auth');
+        return;
+      }
+
+      setStudent(studentData);
+      fetchStudentData(studentData.id);
+    } catch (error) {
+      // Error fetching student data means no valid parent session
+      navigate('/parent-auth');
+    }
+  };
 
   const fetchStudentData = async (studentId: number) => {
     try {
