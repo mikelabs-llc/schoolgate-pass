@@ -75,6 +75,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .eq('parent_password', password)
       .single();
 
+    // If authentication successful, set the child_uid in the session context
+    // This enables RLS policies to work correctly for parent access
+    if (data && !error) {
+      await supabase.rpc('set_config', {
+        setting_name: 'app.current_child_uid',
+        setting_value: childUid
+      });
+    }
+
     return { data, error };
   };
 
