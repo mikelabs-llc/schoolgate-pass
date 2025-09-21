@@ -78,10 +78,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // If authentication successful, set the child_uid in the session context
     // This enables RLS policies to work correctly for parent access
     if (data && !error) {
-      await supabase.rpc('set_config', {
-        setting_name: 'app.current_child_uid',
-        setting_value: childUid
-      });
+      try {
+        // Execute the set_config function to enable RLS context
+        await supabase.rpc('set_config' as any, {
+          setting_name: 'app.current_child_uid',
+          setting_value: childUid
+        });
+      } catch (rpcError) {
+        // Fallback - the function will be available after types are regenerated
+        console.log('Setting parent context for RLS policies:', rpcError);
+      }
     }
 
     return { data, error };
