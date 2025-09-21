@@ -41,30 +41,34 @@ const ParentDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Try to fetch student data directly using RLS policies
-    // If successful, it means parent is authenticated
-    fetchParentStudentData();
+    // Check for stored parent session data
+    const studentData = sessionStorage.getItem('parentStudentData');
+    const childUid = sessionStorage.getItem('parentChildUid');
+    
+    if (!studentData || !childUid) {
+      navigate('/parent-auth');
+      return;
+    }
+
+    // Restore the RLS context for this session
+    restoreParentSession(childUid, JSON.parse(studentData));
   }, [navigate]);
 
-  const fetchParentStudentData = async () => {
+  const restoreParentSession = async (childUid: string, studentData: Student) => {
     try {
-      // Try to fetch student data - this will only work if parent is authenticated
-      // and RLS context is properly set
-      const { data: studentData, error: studentError } = await supabase
-        .from('Students')
-        .select('*')
-        .single();
-
-      if (studentError || !studentData) {
-        // No student data means no valid parent session
-        navigate('/parent-auth');
-        return;
-      }
-
+      // Set the RLS context for this session
+      await supabase.rpc('set_config', {
+        setting_name: 'app.current_child_uid',
+        setting_value: childUid
+      });
+      
       setStudent(studentData);
       fetchStudentData(studentData.id);
     } catch (error) {
-      // Error fetching student data means no valid parent session
+      console.error('Error restoring parent session:', error);
+      // Clear invalid session data and redirect to login
+      sessionStorage.removeItem('parentStudentData');
+      sessionStorage.removeItem('parentChildUid');
       navigate('/parent-auth');
     }
   };

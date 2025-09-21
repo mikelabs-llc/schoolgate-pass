@@ -34,7 +34,7 @@ const ParentAuth = () => {
     if (error || !data) {
       toast({
         title: 'Access Denied',
-        description: 'Invalid Child ID or password. Please check your credentials.',
+        description: error?.message || 'Invalid Child ID or password. Please check your credentials.',
         variant: 'destructive',
       });
     } else {
@@ -42,8 +42,6 @@ const ParentAuth = () => {
         title: 'Welcome!',
         description: `Viewing ${data.name}'s information.`,
       });
-      // Store student data in session storage for parent dashboard
-      sessionStorage.setItem('parentStudentData', JSON.stringify(data));
       navigate('/parent-dashboard');
     }
     

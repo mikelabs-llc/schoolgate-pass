@@ -73,21 +73,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .select('*')
       .eq('child_uid', childUid)
       .eq('parent_password', password)
-      .single();
+      .maybeSingle();
 
     // If authentication successful, set the child_uid in the session context
     // This enables RLS policies to work correctly for parent access
     if (data && !error) {
       try {
         // Execute the set_config function to enable RLS context
-        await supabase.rpc('set_config' as any, {
+        await supabase.rpc('set_config', {
           setting_name: 'app.current_child_uid',
           setting_value: childUid
         });
       } catch (rpcError) {
-        // Fallback - the function will be available after types are regenerated
         console.log('Setting parent context for RLS policies:', rpcError);
       }
+      
+      // Store student data in sessionStorage for persistence across tabs
+      sessionStorage.setItem('parentStudentData', JSON.stringify(data));
+      sessionStorage.setItem('parentChildUid', childUid);
+    } else if (!data && !error) {
+      // No matching student found - create a custom error
+      return { 
+        data: null, 
+        error: { message: 'Invalid Child ID or Password. Please check your credentials and try again.' }
+      };
     }
 
     return { data, error };
