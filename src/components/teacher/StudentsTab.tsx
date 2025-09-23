@@ -32,7 +32,6 @@ export const StudentsTab = () => {
     class: '',
     parent_email: '',
     parent_phone: '',
-    child_uid: '',
     parent_password: '',
   });
 
@@ -58,14 +57,10 @@ export const StudentsTab = () => {
     setLoading(false);
   };
 
-  const generateCredentials = () => {
-    const uid = Math.random().toString(36).substring(2, 10).toUpperCase();
+  const generatePassword = () => {
     const password = Math.random().toString(36).substring(2, 10);
-    const url = `${window.location.origin}/parent-auth?uid=${uid}`;
-    
     setFormData(prev => ({
       ...prev,
-      child_uid: uid,
       parent_password: password,
     }));
   };
@@ -75,7 +70,6 @@ export const StudentsTab = () => {
     
     const studentData = {
       ...formData,
-      access_url: `${window.location.origin}/parent-auth?uid=${formData.child_uid}`,
     };
 
     let result;
@@ -113,7 +107,6 @@ export const StudentsTab = () => {
       class: '',
       parent_email: '',
       parent_phone: '',
-      child_uid: '',
       parent_password: '',
     });
     setEditingStudent(null);
@@ -126,7 +119,6 @@ export const StudentsTab = () => {
       class: student.class,
       parent_email: student.parent_email || '',
       parent_phone: student.parent_phone || '',
-      child_uid: student.child_uid || '',
       parent_password: student.parent_password || '',
     });
     setDialogOpen(true);
@@ -134,7 +126,7 @@ export const StudentsTab = () => {
 
   const handleAddNew = () => {
     resetForm();
-    generateCredentials();
+    generatePassword();
     setDialogOpen(true);
   };
 
@@ -208,31 +200,24 @@ export const StudentsTab = () => {
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Label>Parent Access Credentials</Label>
-                    <Button type="button" onClick={generateCredentials} size="sm" variant="outline">
+                    <div>
+                      <Label>Parent Access Credentials</Label>
+                      <p className="text-sm text-muted-foreground">Child ID will be auto-generated</p>
+                    </div>
+                    <Button type="button" onClick={generatePassword} size="sm" variant="outline">
                       <Key className="h-4 w-4 mr-2" />
-                      Generate New
+                      Generate Password
                     </Button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="child_uid">Child ID</Label>
-                      <Input
-                        id="child_uid"
-                        value={formData.child_uid}
-                        onChange={(e) => setFormData(prev => ({ ...prev, child_uid: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="parent_password">Parent Password</Label>
-                      <Input
-                        id="parent_password"
-                        value={formData.parent_password}
-                        onChange={(e) => setFormData(prev => ({ ...prev, parent_password: e.target.value }))}
-                        required
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="parent_password">Parent Password</Label>
+                    <Input
+                      id="parent_password"
+                      value={formData.parent_password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, parent_password: e.target.value }))}
+                      placeholder="Password for parent access"
+                      required
+                    />
                   </div>
                 </div>
               </div>
