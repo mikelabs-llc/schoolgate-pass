@@ -191,7 +191,7 @@ export type Database = {
       Students: {
         Row: {
           access_url: string | null
-          child_uid: string | null
+          child_uid: string
           class: string
           created_at: string
           id: number
@@ -203,7 +203,7 @@ export type Database = {
         }
         Insert: {
           access_url?: string | null
-          child_uid?: string | null
+          child_uid?: string
           class: string
           created_at?: string
           id?: number
@@ -215,7 +215,7 @@ export type Database = {
         }
         Update: {
           access_url?: string | null
-          child_uid?: string | null
+          child_uid?: string
           class?: string
           created_at?: string
           id?: number
@@ -265,6 +265,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_student_uid: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       set_config: {
         Args: { setting_name: string; setting_value: string }
         Returns: undefined
