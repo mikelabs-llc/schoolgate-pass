@@ -39,7 +39,13 @@ const ParentAuth = () => {
         .eq('child_uid', childUid)
         .maybeSingle();
       
-      if (error || !data) {
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while verifying the Child ID.',
+          variant: 'destructive',
+        });
+      } else if (!data) {
         toast({
           title: 'Invalid Child ID',
           description: 'The Child ID you entered does not exist. Please check and try again.',
